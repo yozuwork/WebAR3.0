@@ -1,0 +1,59 @@
+<!doctype HTML>
+<html>
+    <head>
+        <title>DC 3D Demo</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.2.0/aframe.min.js" integrity="sha512-/gO16YMp20RIqCZXZyvMlzALQqEoiDU0akshw25wFiXCRGl+0p/HPWkOd8HWFn6bnatGhxakGLfYhWaPPVQIyA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    
+    <body style='margin : 0px; overflow: hidden;background-color: #666;'>
+        <script type="text/javascript">
+        AFRAME.registerComponent('drag-rotate-component',{
+            schema : { speed : {default:1}},
+            init : function(){
+                this.ifMouseDown = false;
+                this.x_cord = 0;
+                this.y_cord = 0;
+                document.addEventListener('mousedown',this.OnDocumentMouseDown.bind(this));
+                document.addEventListener('mouseup',this.OnDocumentMouseUp.bind(this));
+                document.addEventListener('mousemove',this.OnDocumentMouseMove.bind(this));
+            },
+            OnDocumentMouseDown : function(event){
+                this.ifMouseDown = true;
+                this.x_cord = event.clientX;
+                this.y_cord = event.clientY;
+            },
+            OnDocumentMouseUp : function(){
+                this.ifMouseDown = false;
+            },
+            OnDocumentMouseMove : function(event){
+                if(this.ifMouseDown) {
+                    var temp_x = event.clientX-this.x_cord;
+                    var temp_y = event.clientY-this.y_cord;
+                    if(Math.abs(temp_y)<Math.abs(temp_x)) {
+                        this.el.object3D.rotateY(temp_x*this.data.speed/200);
+                    }
+                    else {
+                        this.el.object3D.rotateX(temp_y*this.data.speed/200);
+                    }
+                    this.x_cord = event.clientX;
+                    this.y_cord = event.clientY;
+                }
+            }
+        });
+        </script>
+        <a-scene>
+            <a-assets>
+                <a-asset-item id="eyeball-obj" src="./3D-Demo/assets/eyeball.obj"></a-asset-item>
+                <a-asset-item id="eyeball-mtl" src="./3D-Demo/assets/eyeball.mtl"></a-asset-item>
+            </a-assets>
+
+            <!-- <a-entity light="type: directional; color: #EEE; intensity: 0.8" position="-0.5 1 1"></a-entity> -->
+            <a-entity obj-model="obj: #eyeball-obj; mtl: #eyeball-mtl" position="0 0 0" drag-rotate-component></a-entity>
+            <a-entity id="rig" position="0 0 5">
+                <a-entity id="camera" camera look-controls="enabled:false"></a-entity>
+            </a-entity>
+        </a-scene>
+    </body>
+</html>

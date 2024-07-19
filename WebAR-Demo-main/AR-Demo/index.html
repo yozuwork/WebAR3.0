@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AR.js Image Recognition</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.js"></script>
+  </head>
+  <body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-marker type='pattern' url='assets/pattern-marker-1.patt?v=20240717001'>
+        <a-entity
+          geometry="primitive: box; width: 1; height: 1; depth: 1"
+          material="color: yellow"
+          position="0 0.5 0"
+          event-set__click="_event: click; _target: #box; color: red"
+        ></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
